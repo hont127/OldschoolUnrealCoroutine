@@ -12,10 +12,10 @@ Include 'EasyCoroutine.h' to your project.
 
 ## 2.Attach EasyCoroutine with Tickable Object:
 ```
-//define:
+//Define:
 EasyCoroutine mEasyCoroutine = EasyCoroutine();
 
-//attach to FTicker or AActor and bounded 'Tick':
+//Attach to 'FTicker' or 'AActor' and bounded 'Tick':
 mEasyCoroutine.Tick();
 ```
 
