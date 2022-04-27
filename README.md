@@ -24,7 +24,7 @@ mEasyCoroutine.Tick();
 
 
 
-## 3.define context class/struct:
+## 3.Define context class/struct:
 ```
 //Context object saved input arguments and member temporary variables.
 class TestCoroutineContext
@@ -38,7 +38,7 @@ public:
 
 
 
-## 4.define coroutine function body:
+## 4.Define coroutine function body:
 ```
 int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function signature
 {
