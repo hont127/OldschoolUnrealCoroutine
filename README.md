@@ -11,7 +11,7 @@ Include 'EasyCoroutine.h' to your project.
 
 
 ## 2.Attach EasyCoroutine with Tickable Object:
-```
+``` c++
 //Define:
 EasyCoroutine mEasyCoroutine = EasyCoroutine();
 
@@ -25,7 +25,7 @@ mEasyCoroutine.Tick();
 
 
 ## 3.Define context class/struct:
-```
+``` c++
 //Context object saved input arguments and member temporary variables.
 class TestCoroutineContext
 {
@@ -39,7 +39,7 @@ public:
 
 
 ## 4.Define coroutine function body:
-```
+``` c++
 int CoroutineTest(int yieldIndex, void* contextObject)
 {
 	TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
@@ -75,7 +75,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)
 
 
 ## 5.Start coroutine:
-```
+``` c++
 TestCoroutineContext* context = new TestCoroutineContext();
 context1->coroutineIdentifier = 1;//input something.
 mEasyCoroutine.StartCoroutine(CoroutineTest, context);//invoke, like the unity.
