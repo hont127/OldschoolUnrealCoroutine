@@ -17,7 +17,7 @@ EasyCoroutine mEasyCoroutine = EasyCoroutine();
 
 ...
 
-//Attach to 'FTicker' or 'AActor' and bounded 'Tick':
+//Attach to 'FTicker' or 'AActor' etc, and bounded 'Tick':
 mEasyCoroutine.Tick();
 ```
 
