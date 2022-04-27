@@ -40,34 +40,34 @@ public:
 
 ## 4.Define coroutine function body:
 ```
-int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function signature
+int CoroutineTest(int yieldIndex, void* contextObject)
 {
-    TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
+	TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
 
-    switch (yieldIndex)
-    {
-        case 1://step1
-        {
-            UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
-            return 2;
-        }
-        break;
+	switch (yieldIndex)
+	{
+		case COROUTINE_CASE_BEGIN:
+		{
+			UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
+			return COROUTINE_YIELD_NEXT(yieldIndex);
+		}
+		break;
 
-        case 2://step2
-        {
-            return EasyCoroutine::WaitForSeconds(2, 3, context->cacheTime, 1.0);
-        }
-        break;
+		case COROUTINE_CASE_BEGIN + 1:
+		{
+			return EasyCoroutine::WaitForSeconds(yieldIndex, context->cacheTime, 1.0);
+		}
+		break;
 
-        case 3://step3
-        {
-            UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
-            return -1;
-        }
-        break;
-    }
+		case COROUTINE_CASE_BEGIN + 2:
+		{
+			UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
+			return COROUTINE_YIELD_BREAK;
+		}
+		break;
+	}
 
-    return -1;// -1 is exit coroutine.
+	return COROUTINE_YIELD_BREAK;
 }
 ```
 
