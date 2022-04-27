@@ -1,5 +1,5 @@
 # OldschoolUnrealCoroutine
-Oldschool style unreal coroutine
+Oldschool style unreal coroutine by Switch-Case mode.
 
 # How to use?
 
@@ -44,7 +44,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function s
 {
     TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
 
-    switch (yieldIndex)//Use switch case to control breakout and order
+    switch (yieldIndex)
     {
         case 1:
         {
@@ -65,7 +65,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function s
             return -1;
         }
         break;
-    }
+    }//Use the switch case to control breakout and order
 
     return -1;// -1 is exit coroutine.
 }
