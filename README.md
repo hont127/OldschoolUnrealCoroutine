@@ -3,16 +3,20 @@ Oldschool style unreal coroutine
 
 # How to use?
 
-## 1.Attach EasyCoroutine with AActor(Tickable Object):
+## 1.Include 'EasyCoroutine.h':
+
+Include 'EasyCoroutine.h' to your project.
+
+## 2.Attach EasyCoroutine with Tickable Object:
 ```
 //define:
 EasyCoroutine mEasyCoroutine = EasyCoroutine();
 
-//attach to FTicker or AActor tick or etc:
+//attach to FTicker or AActor and bounded 'Tick':
 mEasyCoroutine.Tick();
 ```
 
-## 1.define context class:
+## 3.define context class:
 ```
 //Your input to coroutine arguments or member temp variables.
 class TestCoroutineContext
@@ -23,7 +27,7 @@ public:
 };
 ```
 
-## 2.define coroutine function body:
+## 4.define coroutine function body:
 ```
 int CoroutineTest(int yieldIndex, void* contextObject)
 {
