@@ -26,7 +26,7 @@ mEasyCoroutine.Tick();
 
 ## 3.define context class/struct:
 ```
-//Your input to coroutine arguments or member temporary variables.
+//Context saved input arguments and member temporary variables.
 class TestCoroutineContext
 {
 public:
