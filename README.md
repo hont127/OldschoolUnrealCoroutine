@@ -72,7 +72,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)
 
 
 
-## 5.invoke:
+## 5.Start coroutine:
 ```
 TestCoroutineContext* context1 = new TestCoroutineContext();
 context1->coroutineIdentifier = 1;//input something.
