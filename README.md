@@ -1,5 +1,5 @@
 # OldschoolUnrealCoroutine
-Oldschool style unreal coroutine by Switch-Case mode.
+Oldschool style unreal coroutine use the Switch-Case mode.
 
 # How to use?
 
