@@ -2,6 +2,13 @@
 
 #include "CoreMinimal.h"
 
+#define COROUTINE_CASE_BEGIN 1
+#define COROUTINE_YIELD_BREAK -1
+#define COROUTINE_LOOP_MAX_LIMIT 512
+
+#define COROUTINE_YIELD_CURRENT(index) index
+#define COROUTINE_YIELD_NEXT(index) index+1
+
 struct EasyCoroutineInstance
 {
 	int identifier;
@@ -10,19 +17,18 @@ struct EasyCoroutineInstance
 	int (*pfCoroutineBody)(int, void*) = nullptr;
 };
 
-class EasyCoroutine
+class EasyCoroutine final
 {
 private:
 	int mIdentifierCounter;
 	TArray<EasyCoroutineInstance*> mCoroutines;
 
 public:
-
 	int StartCoroutine(int (*pf)(int, void*), void* contextObject)
 	{
 		EasyCoroutineInstance* coroutine = new EasyCoroutineInstance();
 		coroutine->identifier = ++mIdentifierCounter;
-		coroutine->yieldIndex = 1;
+		coroutine->yieldIndex = COROUTINE_CASE_BEGIN;
 		coroutine->contextObject = contextObject;
 		coroutine->pfCoroutineBody = pf;
 
@@ -67,15 +73,15 @@ public:
 	{
 		if (instance->pfCoroutineBody == nullptr) return true;
 
-		for (int eps = 0; eps < 32; eps++)
+		for (int eps = 0; eps < COROUTINE_LOOP_MAX_LIMIT; eps++)
 		{
-			if (eps == 31)
+			if (eps == COROUTINE_LOOP_MAX_LIMIT-1)
 			{
-				UE_LOG(LogTemp, Log, TEXT("----- Easy Coroutine Loop Max Error! -------"));
+				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check!"));
 			}
 
 			int returnYieldIndex = instance->pfCoroutineBody(instance->yieldIndex, instance->contextObject);
-			if (returnYieldIndex == -1)
+			if (returnYieldIndex == COROUTINE_YIELD_BREAK)
 			{
 				instance->pfCoroutineBody = nullptr;
 
@@ -117,18 +123,18 @@ public:
 		}
 	}
 
-	static int WaitForSeconds(int waitYieldIndex, int nextYieldIndex, float& waitVariable, float duration)
+	static int WaitForSeconds(int currentYieldIndex, float& waitVariable, float duration)
 	{
 		if (waitVariable <= duration)
 		{
 			waitVariable += FApp::GetDeltaTime();
 
-			return waitYieldIndex;
+			return COROUTINE_YIELD_CURRENT(currentYieldIndex);
 		}
 		else
 		{
 			waitVariable = 0;
-			return nextYieldIndex;
+			return COROUTINE_YIELD_NEXT(currentYieldIndex);
 		}
 	}
 };
