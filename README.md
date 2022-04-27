@@ -40,7 +40,7 @@ public:
 
 ## 4.define coroutine function body:
 ```
-int CoroutineTest(int yieldIndex, void* contextObject)
+int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function signature
 {
     TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
 
