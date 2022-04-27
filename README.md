@@ -44,7 +44,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function s
 {
     TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
 
-    switch (yieldIndex)
+    switch (yieldIndex)//Use switch case to control breakout and order
     {
         case 1:
         {
@@ -76,7 +76,7 @@ int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function s
 
 ## 5.Start coroutine:
 ```
-TestCoroutineContext* context1 = new TestCoroutineContext();
+TestCoroutineContext* context = new TestCoroutineContext();
 context1->coroutineIdentifier = 1;//input something.
-mEasyCoroutine.StartCoroutine(CoroutineTest, context1);//invoke, like the unity.
+mEasyCoroutine.StartCoroutine(CoroutineTest, context);//invoke, like the unity.
 ```
