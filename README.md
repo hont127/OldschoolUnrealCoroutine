@@ -46,26 +46,26 @@ int CoroutineTest(int yieldIndex, void* contextObject)//Pay attention function s
 
     switch (yieldIndex)
     {
-        case 1:
+        case 1://step1
         {
             UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
             return 2;
         }
         break;
 
-        case 2:
+        case 2://step2
         {
             return EasyCoroutine::WaitForSeconds(2, 3, context->cacheTime, 1.0);
         }
         break;
 
-        case 3:
+        case 3://step3
         {
             UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
             return -1;
         }
         break;
-    }//Use the switch case to control breakout and order
+    }
 
     return -1;// -1 is exit coroutine.
 }
