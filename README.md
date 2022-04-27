@@ -15,6 +15,8 @@ Include 'EasyCoroutine.h' to your project.
 //Define:
 EasyCoroutine mEasyCoroutine = EasyCoroutine();
 
+...
+
 //Attach to 'FTicker' or 'AActor' and bounded 'Tick':
 mEasyCoroutine.Tick();
 ```
