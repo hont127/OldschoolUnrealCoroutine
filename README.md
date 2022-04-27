@@ -18,7 +18,7 @@ mEasyCoroutine.Tick();
 
 ## 3.define context class:
 ```
-//Your input to coroutine arguments or member temp variables.
+//Your input to coroutine arguments or member temporary variables.
 class TestCoroutineContext
 {
 public:
