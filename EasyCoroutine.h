@@ -124,7 +124,6 @@ public:
 
 	static int WaitForSeconds(int currentYieldIndex, float& waitVariable, float duration)
 	{
-		waitVariable = 0.0f;
 		if (waitVariable <= duration)
 		{
 			waitVariable += FApp::GetDeltaTime();
