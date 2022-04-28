@@ -40,9 +40,9 @@ public:
 
 ## 4.Define coroutine function body:
 ``` c++
-int CoroutineTest(int yieldIndex, void* contextObject)
+int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
 {
-	TestCoroutineContext* context = (TestCoroutineContext*)contextObject;
+	TestCoroutineContext* context = (TestCoroutineContext*)contextObject.Get();
 
 	switch (yieldIndex)
 	{
@@ -76,7 +76,5 @@ int CoroutineTest(int yieldIndex, void* contextObject)
 
 ## 5.Start coroutine:
 ``` c++
-TestCoroutineContext* context = new TestCoroutineContext();
-context1->coroutineIdentifier = 1;//input something.
-mEasyCoroutine.StartCoroutine(CoroutineTest, context);//invoke, like the unity.
+mEasyCoroutine.StartCoroutine(CoroutineTest, TSharedPtr<TestClass>(new TestCoroutineContext()));//invoke, like the unity.
 ```
