@@ -42,32 +42,32 @@ public:
 ``` c++
 int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
 {
-	TestCoroutineContext* context = (TestCoroutineContext*)contextObject.Get();
+    TestCoroutineContext* context = (TestCoroutineContext*)contextObject.Get();
 
-	switch (yieldIndex)
-	{
-		case COROUTINE_CASE_BEGIN:
-		{
-			UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
-			return COROUTINE_YIELD_NEXT(yieldIndex);
-		}
-		break;
+    switch (yieldIndex)
+    {
+        case COROUTINE_CASE_BEGIN:
+        {
+            UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
+            return COROUTINE_YIELD_NEXT(yieldIndex);
+        }
+        break;
 
-		case COROUTINE_CASE_BEGIN + 1:
-		{
-			return EasyCoroutine::WaitForSeconds(yieldIndex, context->cacheTime, 1.0);
-		}
-		break;
+        case COROUTINE_CASE_BEGIN + 1:
+        {
+            return EasyCoroutine::WaitForSeconds(yieldIndex, context->cacheTime, 1.0);
+        }
+        break;
 
-		case COROUTINE_CASE_BEGIN + 2:
-		{
-			UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
-			return COROUTINE_YIELD_BREAK;
-		}
-		break;
-	}
+        case COROUTINE_CASE_BEGIN + 2:
+        {
+            UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
+            return COROUTINE_YIELD_BREAK;
+        }
+        break;
+    }
 
-	return COROUTINE_YIELD_BREAK;
+    return COROUTINE_YIELD_BREAK;
 }
 ```
 
