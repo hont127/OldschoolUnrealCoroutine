@@ -13,8 +13,8 @@ struct EasyCoroutineInstance
 {
 	int identifier;
 	int yieldIndex;
-	void* contextObject;
-	int (*pfCoroutineBody)(int, void*) = nullptr;
+	TSharedPtr<void> contextObject;
+	int (*pfCoroutineBody)(int, TSharedPtr<void>) = nullptr;
 };
 
 class EasyCoroutine final
@@ -24,7 +24,7 @@ private:
 	TArray<EasyCoroutineInstance*> mCoroutines;
 
 public:
-	int StartCoroutine(int (*pf)(int, void*), void* contextObject)
+	int StartCoroutine(int (*pf)(int, TSharedPtr<void>), TSharedPtr<void> contextObject)
 	{
 		EasyCoroutineInstance* coroutine = new EasyCoroutineInstance();
 		coroutine->identifier = ++mIdentifierCounter;
@@ -75,7 +75,7 @@ public:
 
 		for (int eps = 0; eps < COROUTINE_LOOP_MAX_LIMIT; eps++)
 		{
-			if (eps == COROUTINE_LOOP_MAX_LIMIT-1)
+			if (eps == COROUTINE_LOOP_MAX_LIMIT - 1)
 			{
 				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check!"));
 			}
@@ -101,7 +101,6 @@ public:
 		}
 
 		if (instance->pfCoroutineBody == nullptr) {
-			delete instance->contextObject;
 			return true;
 		}
 
