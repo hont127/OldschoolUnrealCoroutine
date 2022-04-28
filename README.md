@@ -76,5 +76,5 @@ int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
 
 ## 5.Start coroutine:
 ``` c++
-mEasyCoroutine.StartCoroutine(CoroutineTest, TSharedPtr<TestClass>(new TestCoroutineContext()));//invoke, like the unity.
+mEasyCoroutine.StartCoroutine(CoroutineTest, TSharedPtr<TestCoroutineContext>(new TestCoroutineContext()));//invoke, like the unity.
 ```
