@@ -84,6 +84,6 @@ mEasyCoroutine.StartCoroutine(CoroutineTest
 ``` c++
 GlobalEasyCoroutine::Instance()->RegisterCoroutine();//bind register.
 //...
-GlobalEasyCoroutine::Instance()->GetCoroutine()->StartCoroutine(CoroutineTest
+GlobalEasyCoroutine::Instance()->GetEC()->StartCoroutine(CoroutineTest
 		, TSharedPtr<EasyCoroutineContextBase>(new EasyCoroutineContextBase()));
 ```
