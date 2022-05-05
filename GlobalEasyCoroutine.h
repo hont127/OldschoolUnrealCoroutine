@@ -45,7 +45,7 @@ private:
     EasyCoroutine* mEasyCoroutine;
 
 public:
-    EasyCoroutine* GetCoroutine()
+    EasyCoroutine* GetEC()
     {
         return mEasyCoroutine;
     }
