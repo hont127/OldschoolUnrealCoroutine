@@ -1,3 +1,5 @@
+// Copyright Hont, Inc. All Rights Reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,102 +11,52 @@
 #define COROUTINE_YIELD_CURRENT(index) index
 #define COROUTINE_YIELD_NEXT(index) index+1
 
-class EasyCoroutineContextBase
+/** Easy coroutine context base struct */
+struct EasyCoroutineContextBase
 {
-public:
-	float internalTimer;
-	int coroutineIdentifier;
-
-	EasyCoroutineContextBase()
-	{
-		internalTimer = 0.0;
-		coroutineIdentifier = 0;
-	}
+	float InternalTimer = 0.0;
+	int CoroutineIdentifier = 0;
 };
 
+/** Easy coroutine execute logic instance object */
 struct EasyCoroutineInstance
 {
-	int identifier;
-	int yieldIndex;
-	TSharedPtr<void> contextObject;
-	int (*pfCoroutineBody)(int, TSharedPtr<void>) = nullptr;
+	int Identifier = 0;
+	int YieldIndex = 0;
+	TSharedPtr<void> ContextObject = nullptr;
+	int (*PfCoroutineBody)(int, TSharedPtr<void>) = nullptr;
 };
 
+/** Easy Coroutine provides common coroutine support. */
 class EasyCoroutine final
 {
 private:
-	int mIdentifierCounter;
-	TArray<EasyCoroutineInstance*> mCoroutines;
+	int IdentifierCounter = 0;
+	TArray<EasyCoroutineInstance*> Coroutines;
 
-public:
-	int StartCoroutine(int (*pf)(int, TSharedPtr<void>), TSharedPtr<void> contextObject)
+	bool TickInstance(EasyCoroutineInstance* Instance)
 	{
-		EasyCoroutineInstance* coroutine = new EasyCoroutineInstance();
-		coroutine->identifier = ++mIdentifierCounter;
-		coroutine->yieldIndex = COROUTINE_CASE_BEGIN;
-		coroutine->contextObject = contextObject;
-		coroutine->pfCoroutineBody = pf;
+		if (Instance->PfCoroutineBody == nullptr) return true;
 
-		mCoroutines.Add(coroutine);
-
-		return coroutine->identifier;
-	}
-
-	void StopCoroutine(int coroutineIdentifier)
-	{
-		int i = mCoroutines.Num();
-		while (--i > -1)
+		for (int Eps = 0; Eps < COROUTINE_LOOP_MAX_LIMIT; Eps++)
 		{
-			EasyCoroutineInstance* instance = mCoroutines[i];
-			if (instance->identifier == coroutineIdentifier)
+			if (Eps == COROUTINE_LOOP_MAX_LIMIT - 1)
 			{
-				delete instance;
-				mCoroutines.RemoveAt(i);
-				break;
-			}
-		}
-	}
-
-	void StopAllCoroutines()
-	{
-		int i = mCoroutines.Num();
-		while (--i > -1)
-		{
-			EasyCoroutineInstance* instance = mCoroutines[i];
-			delete instance;
-		}
-
-		mCoroutines.Empty();
-	}
-
-	int CurrentCoroutineCount()
-	{
-		return mCoroutines.Num();
-	}
-
-	bool TickInstance(EasyCoroutineInstance* instance)
-	{
-		if (instance->pfCoroutineBody == nullptr) return true;
-
-		for (int eps = 0; eps < COROUTINE_LOOP_MAX_LIMIT; eps++)
-		{
-			if (eps == COROUTINE_LOOP_MAX_LIMIT - 1)
-			{
-				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check!"));
+				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check! %s %s %s"), __FILE__, __FUNCTION__, __LINE__);
 			}
 
-			int returnYieldIndex = instance->pfCoroutineBody(instance->yieldIndex, instance->contextObject);
+			int returnYieldIndex = Instance->PfCoroutineBody(Instance->YieldIndex, Instance->ContextObject);
 			if (returnYieldIndex == COROUTINE_YIELD_BREAK)
 			{
-				instance->pfCoroutineBody = nullptr;
+				Instance->PfCoroutineBody = nullptr;
 
 				break;
 			}
 			else
 			{
-				if (returnYieldIndex != instance->yieldIndex)
+				if (returnYieldIndex != Instance->YieldIndex)
 				{
-					instance->yieldIndex = returnYieldIndex;
+					Instance->YieldIndex = returnYieldIndex;
 				}
 				else
 				{
@@ -113,40 +65,109 @@ public:
 			}
 		}
 
-		if (instance->pfCoroutineBody == nullptr) {
+		if (Instance->PfCoroutineBody == nullptr) {
 			return true;
 		}
 
 		return false;
 	}
 
-	void Tick()
-	{
-		int i = mCoroutines.Num();
-		while (--i > -1)
-		{
-			EasyCoroutineInstance* instance = mCoroutines[i];
+public:
 
-			if (TickInstance(instance))
+
+	/**
+	 * Start new coroutine by standard function sign format.
+	 * @PARAM pf is the coroutine function
+	 * @PARAM contextObject is coroutine internal context.
+	 *
+	 *
+	 * @Return Coroutine identifier.
+	 */
+	int StartCoroutine(int (*Pf)(int, TSharedPtr<void>), TSharedPtr<void> ContextObject)
+	{
+		EasyCoroutineInstance* Coroutine = new EasyCoroutineInstance();
+		Coroutine->Identifier = ++IdentifierCounter;
+		Coroutine->YieldIndex = COROUTINE_CASE_BEGIN;
+		Coroutine->ContextObject = ContextObject;
+		Coroutine->PfCoroutineBody = Pf;
+
+		Coroutines.Add(Coroutine);
+
+		return Coroutine->Identifier;
+	}
+
+	/**
+	 * Stop the coroutine.
+	 * @PARAM coroutineIdentifier is the coroutine identifier
+	 */
+	void StopCoroutine(int CoroutineIdentifier)
+	{
+		int Idx = Coroutines.Num();
+		while (--Idx > -1)
+		{
+			EasyCoroutineInstance* Instance = Coroutines[Idx];
+			if (Instance->Identifier == CoroutineIdentifier)
 			{
-				delete instance;
-				mCoroutines.RemoveAt(i);
+				delete Instance;
+				Coroutines.RemoveAt(Idx);
+				break;
 			}
 		}
 	}
 
-	static int WaitForSeconds(int currentYieldIndex, float& waitVariable, float duration)
+	/**
+	 * Stop all coroutines.
+	 */
+	void StopAllCoroutines()
 	{
-		if (waitVariable <= duration)
+		int Idx = Coroutines.Num();
+		while (--Idx > -1)
 		{
-			waitVariable += FApp::GetDeltaTime();
+			EasyCoroutineInstance* Instance = Coroutines[Idx];
+			delete Instance;
+		}
 
-			return COROUTINE_YIELD_CURRENT(currentYieldIndex);
+		Coroutines.Empty();
+	}
+
+	/**
+	 * Get current coroutine count.
+	 *
+	 *
+	 * @Return Current coroutine count.
+	 */
+	int CurrentCoroutineCount()
+	{
+		return Coroutines.Num();
+	}
+
+	void Tick()
+	{
+		int Idx = Coroutines.Num();
+		while (--Idx > -1)
+		{
+			EasyCoroutineInstance* Instance = Coroutines[Idx];
+
+			if (TickInstance(Instance))
+			{
+				delete Instance;
+				Coroutines.RemoveAt(Idx);
+			}
+		}
+	}
+
+	static int WaitForSeconds(int CurrentYieldIndex, float& WaitVariable, float Duration)
+	{
+		if (WaitVariable <= Duration)
+		{
+			WaitVariable += FApp::GetDeltaTime();
+
+			return COROUTINE_YIELD_CURRENT(CurrentYieldIndex);
 		}
 		else
 		{
-			waitVariable = 0.0f;
-			return COROUTINE_YIELD_NEXT(currentYieldIndex);
+			WaitVariable = 0.0f;
+			return COROUTINE_YIELD_NEXT(CurrentYieldIndex);
 		}
 	}
 };
