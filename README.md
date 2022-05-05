@@ -27,7 +27,7 @@ mEasyCoroutine.Tick();
 ## 3.Define context class/struct:
 ``` c++
 //Context object saved input arguments and member temporary variables.
-class TestCoroutineContext
+class TestCoroutineContext : public EasyCoroutineContextBase
 {
 public:
     int coroutineIdentifier;
@@ -77,4 +77,12 @@ int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
 ## 5.Start coroutine:
 ``` c++
 mEasyCoroutine.StartCoroutine(CoroutineTest, TSharedPtr<TestCoroutineContext>(new TestCoroutineContext()));//invoke, like the unity.
+```
+
+## 6.Start Global Coroutine:
+``` c++
+GlobalEasyCoroutine::Instance()->RegisterCoroutine();//bind register.
+//...
+GlobalEasyCoroutine::Instance()->GetCoroutine()->StartCoroutine(CoroutineTest
+		, TSharedPtr<EasyCoroutineContextBase>(new EasyCoroutineContextBase()));
 ```
