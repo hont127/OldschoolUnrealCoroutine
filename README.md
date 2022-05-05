@@ -80,7 +80,7 @@ mEasyCoroutine.StartCoroutine(CoroutineTest
 , TSharedPtr<TestCoroutineContext>(new TestCoroutineContext()));//invoke, like the unity.
 ```
 
-## 6.Start Global Coroutine:
+## 6.Start global coroutine:
 ``` c++
 GlobalEasyCoroutine::Instance()->RegisterCoroutine();//bind register.
 //...
