@@ -1,3 +1,5 @@
+// Copyright Hont, Inc. All Rights Reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -41,22 +43,22 @@ private:
 	static bool sIsReleased;
 
 private:
-    FDelegateHandle mUpdateTickerHandle;
-    EasyCoroutine* mEasyCoroutine;
+    FDelegateHandle UpdateTickerHandle;
+    EasyCoroutine* InternalEasyCoroutine;
 
 public:
     EasyCoroutine* GetEC()
     {
-        return mEasyCoroutine;
+        return InternalEasyCoroutine;
     }
 
     void RegisterCoroutine()
     {
-        mEasyCoroutine = new EasyCoroutine();
+        InternalEasyCoroutine = new EasyCoroutine();
 
-        mUpdateTickerHandle = FTicker::GetCoreTicker().AddTicker(TEXT("Global Easy Coroutine"), 0.0f, [this](float DeltaTime)
+        UpdateTickerHandle = FTicker::GetCoreTicker().AddTicker(TEXT("Global Easy Coroutine"), 0.0f, [this](float DeltaTime)
         {
-            mEasyCoroutine->Tick();
+            InternalEasyCoroutine->Tick();
             return true;
         });
     }
@@ -64,7 +66,8 @@ public:
     void UnregisterCoroutine()
     {
         FTicker::GetCoreTicker().RemoveTicker(mUpdateTickerHandle);
-        delete mEasyCoroutine;
+        delete UpdateTickerHandle;
+        delete InternalEasyCoroutine;
     }
 };
 
