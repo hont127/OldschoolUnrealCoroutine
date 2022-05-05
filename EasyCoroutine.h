@@ -9,6 +9,19 @@
 #define COROUTINE_YIELD_CURRENT(index) index
 #define COROUTINE_YIELD_NEXT(index) index+1
 
+class EasyCoroutineContextBase
+{
+public:
+	float internalTimer;
+	int coroutineIdentifier;
+
+	EasyCoroutineContextBase()
+	{
+		internalTimer = 0.0;
+		coroutineIdentifier = 0;
+	}
+};
+
 struct EasyCoroutineInstance
 {
 	int identifier;
