@@ -83,7 +83,7 @@ mEasyCoroutine.StartCoroutine(CoroutineTest
 ## 6.Start global coroutine:
 ``` c++
 GlobalEasyCoroutine::Instance()->RegisterCoroutine();//bind register.
-//...
+...
 GlobalEasyCoroutine::Instance()->GetEC()->StartCoroutine(CoroutineTest
 		, TSharedPtr<EasyCoroutineContextBase>(new EasyCoroutineContextBase()));
 ```
