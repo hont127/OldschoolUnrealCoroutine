@@ -65,8 +65,7 @@ public:
 
     void UnregisterCoroutine()
     {
-        FTicker::GetCoreTicker().RemoveTicker(mUpdateTickerHandle);
-        delete UpdateTickerHandle;
+        FTicker::GetCoreTicker().RemoveTicker(UpdateTickerHandle);
         delete InternalEasyCoroutine;
     }
 };
