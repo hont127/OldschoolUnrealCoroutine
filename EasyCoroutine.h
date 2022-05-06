@@ -114,7 +114,7 @@ public:
 	 * Stop the coroutine.
 	 * @PARAM coroutineIdentifier is the coroutine identifier
 	 */
-	void StopCoroutine(int CoroutineIdentifier)
+	void StopCoroutine(const int CoroutineIdentifier)
 	{
 		int Idx = Coroutines.Num();
 		while (--Idx > -1)
@@ -170,7 +170,7 @@ public:
 		}
 	}
 
-	static int WaitForSeconds(int CurrentYieldIndex, float& WaitVariable, float Duration)
+	static int WaitForSeconds(const int CurrentYieldIndex, float& WaitVariable, const float Duration)
 	{
 		if (WaitVariable <= Duration)
 		{
