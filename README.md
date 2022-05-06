@@ -30,7 +30,7 @@ EasyCoroutine.Tick();
 class TestCoroutineContext : public EasyCoroutineContextBase
 {
 public:
-    int CoroutineIdentifier;
+    int32 CoroutineIdentifier;
     float CacheTime;
 };
 ```
