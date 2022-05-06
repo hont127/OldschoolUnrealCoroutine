@@ -14,17 +14,31 @@
 /** Easy coroutine context base struct */
 struct EasyCoroutineContextBase
 {
-	float InternalTimer = 0.0;
-	int CoroutineIdentifier = 0;
+	float InternalTimer;
+	int CoroutineIdentifier;
+
+	EasyCoroutineContextBase()
+		: InternalTimer(0.0)
+		, CoroutineIdentifier(0)
+	{
+	}
 };
 
 /** Easy coroutine execute logic instance object */
 struct EasyCoroutineInstance
 {
-	int Identifier = 0;
-	int YieldIndex = 0;
-	TSharedPtr<void> ContextObject = nullptr;
-	int (*PfCoroutineBody)(int, TSharedPtr<void>) = nullptr;
+	int Identifier;
+	int YieldIndex;
+	TSharedPtr<void> ContextObject;
+	int (*PfCoroutineBody)(int, TSharedPtr<void>);
+
+	EasyCoroutineInstance()
+		: Identifier(0)
+		, YieldIndex(0)
+		, ContextObject(nullptr)
+		, PfCoroutineBody(nullptr)
+	{
+	}
 };
 
 /** Easy Coroutine provides common coroutine support. */
