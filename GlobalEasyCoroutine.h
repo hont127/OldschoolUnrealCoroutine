@@ -9,25 +9,25 @@
 class GlobalEasyCoroutine final
 {
 public:
-    static GlobalEasyCoroutine* Instance() {
+    static GlobalEasyCoroutine* Get() {
 
-        if (sIsReleased) return nullptr;
+        if (bIsReleased) return nullptr;
 
-        if (sInstance == nullptr) {
-            sInstance = CreateInstance();
+        if (Instance == nullptr) {
+            Instance = CreateInstance();
         }
-        return sInstance;
+        return Instance;
     }
 
     static void ReleasedStateRestore() {
-        sIsReleased = false;
+        bIsReleased = false;
     }
 
     static void Release() {
-        if (sInstance != nullptr) {
-            delete sInstance;
-            sInstance = nullptr;
-            sIsReleased = true;
+        if (Instance != nullptr) {
+            delete Instance;
+            Instance = nullptr;
+            bIsReleased = true;
         }
     }
 
@@ -39,8 +39,8 @@ private:
 	}
 
 private:
-	static GlobalEasyCoroutine* sInstance;
-	static bool sIsReleased;
+	static GlobalEasyCoroutine* Instance;
+	static bool bIsReleased;
 
 private:
     FDelegateHandle UpdateTickerHandle;
@@ -70,5 +70,5 @@ public:
     }
 };
 
-bool GlobalEasyCoroutine::sIsReleased = false;
-GlobalEasyCoroutine* GlobalEasyCoroutine::sInstance = nullptr;
+bool GlobalEasyCoroutine::bIsReleased = false;
+GlobalEasyCoroutine* GlobalEasyCoroutine::Instance = nullptr;
