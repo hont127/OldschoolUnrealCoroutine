@@ -15,7 +15,7 @@
 struct EasyCoroutineContextBase
 {
 	float InternalTimer;
-	int CoroutineIdentifier;
+	int32 CoroutineIdentifier;
 
 	EasyCoroutineContextBase()
 		: InternalTimer(0.0)
@@ -27,10 +27,10 @@ struct EasyCoroutineContextBase
 /** Easy coroutine execute logic instance object */
 struct EasyCoroutineInstance
 {
-	int Identifier;
-	int YieldIndex;
+	int32 Identifier;
+	int32 YieldIndex;
 	TSharedPtr<void> ContextObject;
-	int (*PfCoroutineBody)(int, TSharedPtr<void>);
+	int32 (*PfCoroutineBody)(int32, TSharedPtr<void>);
 
 	EasyCoroutineInstance()
 		: Identifier(0)
@@ -45,21 +45,21 @@ struct EasyCoroutineInstance
 class EasyCoroutine final
 {
 private:
-	int IdentifierCounter = 0;
+	int32 IdentifierCounter = 0;
 	TArray<EasyCoroutineInstance*> Coroutines;
 
 	bool TickInstance(EasyCoroutineInstance* Instance)
 	{
 		if (Instance->PfCoroutineBody == nullptr) return true;
 
-		for (int Eps = 0; Eps < COROUTINE_LOOP_MAX_LIMIT; Eps++)
+		for (int32 Eps = 0; Eps < COROUTINE_LOOP_MAX_LIMIT; Eps++)
 		{
 			if (Eps == COROUTINE_LOOP_MAX_LIMIT - 1)
 			{
 				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check! %s %s %s"), __FILE__, __FUNCTION__, __LINE__);
 			}
 
-			int returnYieldIndex = Instance->PfCoroutineBody(Instance->YieldIndex, Instance->ContextObject);
+			int32 returnYieldIndex = Instance->PfCoroutineBody(Instance->YieldIndex, Instance->ContextObject);
 			if (returnYieldIndex == COROUTINE_YIELD_BREAK)
 			{
 				Instance->PfCoroutineBody = nullptr;
@@ -97,7 +97,7 @@ public:
 	 *
 	 * @Return Coroutine identifier.
 	 */
-	int StartCoroutine(int (*Pf)(int, TSharedPtr<void>), TSharedPtr<void> ContextObject)
+	int32 StartCoroutine(int32 (*Pf)(int32, TSharedPtr<void>), TSharedPtr<void> ContextObject)
 	{
 		EasyCoroutineInstance* Coroutine = new EasyCoroutineInstance();
 		Coroutine->Identifier = ++IdentifierCounter;
@@ -114,9 +114,9 @@ public:
 	 * Stop the coroutine.
 	 * @PARAM coroutineIdentifier is the coroutine identifier
 	 */
-	void StopCoroutine(const int CoroutineIdentifier)
+	void StopCoroutine(const int32 CoroutineIdentifier)
 	{
-		int Idx = Coroutines.Num();
+		int32 Idx = Coroutines.Num();
 		while (--Idx > -1)
 		{
 			EasyCoroutineInstance* Instance = Coroutines[Idx];
@@ -134,7 +134,7 @@ public:
 	 */
 	void StopAllCoroutines()
 	{
-		int Idx = Coroutines.Num();
+		int32 Idx = Coroutines.Num();
 		while (--Idx > -1)
 		{
 			EasyCoroutineInstance* Instance = Coroutines[Idx];
@@ -150,14 +150,14 @@ public:
 	 *
 	 * @Return Current coroutine count.
 	 */
-	int CurrentCoroutineCount()
+	FORCEINLINE int32 CurrentCoroutineCount()
 	{
 		return Coroutines.Num();
 	}
 
 	void Tick()
 	{
-		int Idx = Coroutines.Num();
+		int32 Idx = Coroutines.Num();
 		while (--Idx > -1)
 		{
 			EasyCoroutineInstance* Instance = Coroutines[Idx];
@@ -170,12 +170,11 @@ public:
 		}
 	}
 
-	static int WaitForSeconds(const int CurrentYieldIndex, float& WaitVariable, const float Duration)
+	static int32 WaitForSeconds(const int32 CurrentYieldIndex, float& WaitVariable, const float Duration)
 	{
 		if (WaitVariable <= Duration)
 		{
 			WaitVariable += FApp::GetDeltaTime();
-
 			return COROUTINE_YIELD_CURRENT(CurrentYieldIndex);
 		}
 		else
