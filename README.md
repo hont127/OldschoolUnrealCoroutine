@@ -13,12 +13,12 @@ Include 'EasyCoroutine.h' to your project.
 ## 2.Attach EasyCoroutine with Tickable Object:
 ``` c++
 //Define:
-EasyCoroutine mEasyCoroutine = EasyCoroutine();
+EasyCoroutine EasyCoroutine = EasyCoroutine();
 
 ...
 
 //Attach to 'FTicker' or 'AActor' etc, and bounded 'Tick':
-mEasyCoroutine.Tick();
+EasyCoroutine.Tick();
 ```
 
 
@@ -30,8 +30,8 @@ mEasyCoroutine.Tick();
 class TestCoroutineContext : public EasyCoroutineContextBase
 {
 public:
-    int coroutineIdentifier;
-    float cacheTime;
+    int CoroutineIdentifier;
+    float CacheTime;
 };
 ```
 
@@ -40,28 +40,28 @@ public:
 
 ## 4.Define coroutine function body:
 ``` c++
-int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
+int32 CoroutineTest(int32 YieldIndex, TSharedPtr<void> ContextObject)
 {
-    TestCoroutineContext* context = (TestCoroutineContext*)contextObject.Get();
+    TestCoroutineContext* Context = (TestCoroutineContext*)ContextObject.Get();
 
-    switch (yieldIndex)
+    switch (YieldIndex)
     {
         case COROUTINE_CASE_BEGIN:
         {
-            UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), context->coroutineIdentifier);
-            return COROUTINE_YIELD_NEXT(yieldIndex);
+            UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), Context->CoroutineIdentifier);
+            return COROUTINE_YIELD_NEXT(YieldIndex);
         }
         break;
 
         case COROUTINE_CASE_BEGIN + 1:
         {
-            return EasyCoroutine::WaitForSeconds(yieldIndex, context->cacheTime, 1.0);
+            return EasyCoroutine::WaitForSeconds(YieldIndex, Context->CacheTime, 1.0);
         }
         break;
 
         case COROUTINE_CASE_BEGIN + 2:
         {
-            UE_LOG(LogTemp, Log, TEXT("coroutine%d: end"), context->coroutineIdentifier);
+            UE_LOG(LogTemp, Log, TEXT("Coroutine%d: end"), Context->CoroutineIdentifier);
             return COROUTINE_YIELD_BREAK;
         }
         break;
@@ -76,14 +76,12 @@ int CoroutineTest(int yieldIndex, TSharedPtr<void> contextObject)
 
 ## 5.Start coroutine:
 ``` c++
-mEasyCoroutine.StartCoroutine(CoroutineTest
-, TSharedPtr<TestCoroutineContext>(new TestCoroutineContext()));//invoke, like the unity.
+EasyCoroutine.StartCoroutine(CoroutineTest, MakeShareable(new TestCoroutineContext()));//invoke, like the unity.
 ```
 
 ## 6.Start global coroutine:
 ``` c++
-GlobalEasyCoroutine::Instance()->RegisterCoroutine();//bind register.
+GlobalEasyCoroutine::Get()->RegisterCoroutine();//bind register.
 ...
-GlobalEasyCoroutine::Instance()->GetEC()->StartCoroutine(CoroutineTest
-, MakeShareable(new EasyCoroutineContextBase()));
+GlobalEasyCoroutine::Get()->GetEC()->StartCoroutine(CoroutineTest, MakeShareable(new EasyCoroutineContextBase()));
 ```
