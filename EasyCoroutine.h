@@ -88,6 +88,9 @@ private:
 
 public:
 
+	EasyCoroutine() {}
+	~EasyCoroutine() {}
+
 
 	/**
 	 * Start new coroutine by standard function sign format.
@@ -175,6 +178,7 @@ public:
 		if (WaitVariable <= Duration)
 		{
 			WaitVariable += FApp::GetDeltaTime();
+
 			return COROUTINE_YIELD_CURRENT(CurrentYieldIndex);
 		}
 		else
