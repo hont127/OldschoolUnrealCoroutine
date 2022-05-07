@@ -94,8 +94,8 @@ public:
 
 	/**
 	 * Start new coroutine by standard function sign format.
-	 * @PARAM pf is the coroutine function
-	 * @PARAM contextObject is coroutine internal context.
+	 * @PARAM Pf is the coroutine function
+	 * @PARAM ContextObject is coroutine internal context.
 	 *
 	 *
 	 * @Return Coroutine identifier.
