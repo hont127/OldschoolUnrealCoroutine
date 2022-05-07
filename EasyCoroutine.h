@@ -115,7 +115,7 @@ public:
 
 	/**
 	 * Stop the coroutine.
-	 * @PARAM coroutineIdentifier is the coroutine identifier
+	 * @PARAM CoroutineIdentifier is the coroutine identifier
 	 */
 	void StopCoroutine(const int32 CoroutineIdentifier)
 	{
