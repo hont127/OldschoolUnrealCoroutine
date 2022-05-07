@@ -48,7 +48,7 @@ int32 CoroutineTest(int32 YieldIndex, TSharedPtr<void> ContextObject)
     {
         case COROUTINE_CASE_BEGIN:
         {
-            UE_LOG(LogTemp, Log, TEXT("coroutine%d: begin"), Context->CoroutineIdentifier);
+            UE_LOG(LogTemp, Log, TEXT("Coroutine%d: begin"), Context->CoroutineIdentifier);
             return COROUTINE_YIELD_NEXT(YieldIndex);
         }
         break;
