@@ -56,7 +56,7 @@ private:
 		{
 			if (Eps == COROUTINE_LOOP_MAX_LIMIT - 1)
 			{
-				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check! %s %s %s"), __FILE__, __FUNCTION__, __LINE__);
+				UE_LOG(LogTemp, Log, TEXT("Coroutine out of max loop count, please check! %s %s %d"), TEXT(__FILE__), TEXT(__FUNCTION__), __LINE__);
 			}
 
 			int32 returnYieldIndex = Instance->PfCoroutineBody(Instance->YieldIndex, Instance->ContextObject);
